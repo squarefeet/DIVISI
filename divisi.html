@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<!-- // <script type="text/javascript" src="lib/BufferPool.js"></script> -->
+
+		<script type="text/javascript" src="src/DIVISI.js"></script>
+		<script type="text/javascript" src="src/objects/Events.js"></script>
+		<script type="text/javascript" src="src/objects/Message.js"></script>
+		<script type="text/javascript" src="src/objects/Filter.js"></script>
+		<script type="text/javascript" src="src/objects/MessagePool.js"></script>
+
+		<script type="text/javascript" src="src/modules/constants.js"></script>
+		<script type="text/javascript" src="src/modules/commands.js"></script>
+		<script type="text/javascript" src="src/modules/cc.js"></script>
+		<script type="text/javascript" src="src/modules/utils.js"></script>
+		<script type="text/javascript" src="src/modules/math.js"></script>
+		<script type="text/javascript" src="src/modules/scales.js"></script>
+		<script type="text/javascript" src="src/modules/chords.js"></script>
+
+		<script type="text/javascript" src="src/nodes/Node.js"></script>
+		<script type="text/javascript" src="src/nodes/NoteNode.js"></script>
+		<script type="text/javascript" src="src/nodes/MessageFilter.js"></script>
+		<script type="text/javascript" src="src/nodes/Transposer.js"></script>
+		<script type="text/javascript" src="src/nodes/Scalify.js"></script>
+		<script type="text/javascript" src="src/nodes/Chordify.js"></script>
+		<script type="text/javascript" src="src/nodes/ValueRandomiser.js"></script>
+		<script type="text/javascript" src="src/nodes/ValueControl.js"></script>
+		<script type="text/javascript" src="src/nodes/RoundRobin.js"></script>
+		<script type="text/javascript" src="src/nodes/Translator.js"></script>
+
+		<script type="text/javascript" src="src/messaging.js"></script>
+
+
+		<script type="text/javascript">
+
+		var message = DIVISI.createMessage( {
+			command: DIVISI.commands.CC,
+			channel: 1,
+			byte1: DIVISI.cc.BALANCE,
+			byte2: 127
+		} );
+
+		// console.log( message );
+
+
+		var rawMessage = DIVISI.createRawMessage( message );
+		// console.log( rawMessage );
+
+		var binaryMessage = DIVISI.utils.messageToBinary( message );
+		// console.log( binaryMessage );
+
+
+		var filter = DIVISI.createFilter( {
+			command: DIVISI.commands.CC,
+			channel: 1
+		} );
+		console.log( filter );
+
+		console.log( DIVISI.utils.matchFilter( filter, message ) );
+
+
+
+		///////////
+
+
+		// var effect1 = DIVISI.createNode(),
+		// 	filter = new DIVISI.MessageFilter( filter );
+
+		// filter.on( 'message:post', function( message ) {
+		// 	console.log( 'filter:', message );
+		// } );
+
+		// effect1.connect( filter );
+		// effect1.onmidimessage( message );
+
+		// var effect1 = DIVISI.createNode(),
+		// 	transposer = new DIVISI.Transposer( 10 ),
+		// 	msg = DIVISI.createMessage( {
+		// 		command: DIVISI.commands.NOTE_ON,
+		// 		byte2: 20
+		// 	} );
+
+		// transposer.on( 'message:post', function( message ) {
+		// 	console.log( 'transposer:', message );
+		// } );
+
+		// effect1.connect( transposer );
+		// effect1.onmidimessage( msg );
+
+		// var effect1 = DIVISI.createNode(),
+		// 	scalify = new DIVISI.Scalify({
+		// 		scale: DIVISI.scales.MAJOR,
+		// 		operation: DIVISI.constants.NEAREST_NEIGHBOUR,
+		// 		root: DIVISI.math.noteToMIDI( 'E2' ),
+		// 		mode: DIVISI.constants.EXCLUDE
+		// 	}),
+		// 	msg = DIVISI.createMessage( {
+		// 		command: DIVISI.commands.NOTE_ON,
+		// 		byte2: DIVISI.math.noteToMIDI( 'E2' )
+		// 	} );
+
+		// scalify.on( 'message:post', function( message ) {
+		// 	console.log( 'scalify:', message );
+		// 	console.log( DIVISI.math.midiToNote( message.data[ 1 ] ) );
+		// 	DIVISI.releaseMessage( undefined );
+		// } );
+
+		// effect1.connect( scalify );
+		// effect1.onmidimessage( msg );
+
+
+		// var effect1 = DIVISI.createNode(),
+		// 	chordify = new DIVISI.Chordify({
+		// 		chord: DIVISI.chords.HarmonicSeventh,
+		// 		inversion: 2
+		// 	}),
+		// 	msg = DIVISI.createMessage( {
+		// 		command: DIVISI.commands.NOTE_ON,
+		// 		byte2: DIVISI.math.noteToMIDI( 'C2' )
+		// 	} );
+
+		// chordify.on( 'message:post', function( message ) {
+		// 	console.log( 'chordify:', message );
+		// 	console.log( DIVISI.math.midiToNote( message.data[ 1 ] ) );
+		// 	DIVISI.releaseMessage( message );
+		// } );
+
+		// effect1.connect( chordify );
+		// effect1.onmidimessage( msg );
+
+
+		// var effect1 = DIVISI.createNode(),
+		// 	randomiser = new DIVISI.ValueRandomiser({
+		// 		chance: 1,
+		// 		mode: DIVISI.constants.RANDOM,
+		// 		operation: DIVISI.constants.BI_DIRECTIONAL,
+		// 		range: 2,
+		// 		multiplier: 6
+		// 		// targetByte: DIVISI.constants.SECOND_BYTE
+		// 	});
+
+
+		// var count = 0,
+		// 	total = 2;
+
+		// randomiser.on( 'message:post', function( message ) {
+		// 	if( (++count) === total ) {
+		// 		console.timeEnd( 'wat' );
+		// 	}
+		// 	// console.log( 'randomiser:', message );
+		// 	// console.log( DIVISI.math.midiToNote( message.data[ 1 ] ) );
+		// 	DIVISI.releaseMessage( message );
+		// } );
+
+		// effect1.connect( randomiser );
+
+		// console.time( 'wat' );
+		// for( var i = 0; i < total; ++i ) {
+		// 	effect1.onmidimessage( DIVISI.createMessage( {
+		// 		command: DIVISI.commands.NOTE_ON,
+		// 		byte2: DIVISI.math.noteToMIDI( 'C4' )
+		// 	} ) );
+		// }
+
+
+
+		// var canvas = document.createElement( 'canvas' ),
+		// 	ctx = canvas.getContext( '2d' );
+
+		// canvas.style.border = '1px solid rgba( 0, 0, 0, 0.5 )';
+
+		// document.body.appendChild( canvas );
+
+		// canvas.width = 128;
+		// canvas.height = 128;
+
+
+		// var effect1 = DIVISI.createNode(),
+		// 	valueControl = DIVISI.createValueControl({
+		// 		inMin: 64,
+		// 		inMax: 127,
+		// 		outMin: 0,
+		// 		outMax: 127,
+		// 		drive: 0,
+		// 		compand: 0,
+		// 		random: 0,
+		// 		mode: DIVISI.constants.GATE
+		// 	}),
+		// 	chordify = DIVISI.createChordify({
+		// 		chord: DIVISI.chords.HarmonicSeventh,
+		// 		inversion: 0
+		// 	}),
+		// 	roundRobin = DIVISI.createRoundRobin( chordify, valueControl );
+
+		// valueControl.on( 'message:post', function( message, value ) {
+		// 	console.log( message.data );
+		// 	ctx.fillRect( value, 127 - message.data[2] + 1, 1, 1 );
+		// 	DIVISI.releaseMessage( message );
+		// } );
+
+		// chordify.on( 'message:post', function( message ) {
+		// 	console.log( message.data );
+		// 	DIVISI.releaseMessage( message );
+		// } );
+
+		// effect1.connect( roundRobin );
+
+
+		// for( var i = 0; i < 128; ++i ) {
+		// 	effect1.onmidimessage( DIVISI.createMessage( {
+		// 		command: DIVISI.commands.NOTE_ON,
+		// 		byte1: DIVISI.math.noteToMIDI( 'C2' ),
+		// 		byte2: i
+		// 	} ) );
+		// }
+
+
+		var effect1 = DIVISI.createNode(),
+			translator = DIVISI.createTranslator( {
+			    input: DIVISI.createFilter( {
+			        command: DIVISI.commands.NOTE_ON,
+			    } ),
+			    output: DIVISI.createTranslatorMessage( {
+			        byte0: DIVISI.commands.PITCH_BEND,
+			        byte1: false,
+			        byte2: '1'
+			    } )
+			} );
+
+		effect1.connect( translator );
+		translator.on( 'message:post', function( message ) {
+			console.log( message.data );
+		} );
+
+		effect1.onmidimessage( DIVISI.createMessage( {
+			command: DIVISI.commands.NOTE_ON,
+			byte1: DIVISI.math.noteToMIDI( 'C2' ),
+			byte2: 1
+		} ) );
+
+
+		</script>
+	</body>
+</html>

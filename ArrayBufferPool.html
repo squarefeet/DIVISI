@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript" src="src/lib/BufferPool.js"></script>
+		<script type="text/javascript" src="src/objects/MessagePool.js"></script>
+		<script type="text/javascript">
+			// A midi message's .data property is a Uint8Array,
+			// with 3 components.
+			var bufferPool = new BufferPool( Uint8Array, 100, 3 ),
+				messagePool = new InternalMessagePool( bufferPool );
+
+			console.log( messagePool );
+
+
+
+			for( var i = 0; i < 50; ++i ) {
+				var m = messagePool.get();
+				m.data[0] = Math.random() * 2;
+				m.data[1] = Math.random() * 2;
+				m.data[2] = Math.random() * 2;
+
+				console.log( m );
+				bufferPool.release( m );
+			}
+
+		</script>
+	</body>
+</html>
